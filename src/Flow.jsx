@@ -8,24 +8,40 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 
+//내부 import
+import TextUpdaterNode from "./TextUpdaterNode";
+import "./text-updater-node.css";
+
+const rfStyle = {
+  backgroundColor: "yellow",
+};
+const nodeTypes = { textUpdater: TextUpdaterNode };
 /**노드 */
+// const initialNodes = [
+//   {
+//     /* 다양한 노드를 활용하기 위해 고유한 id를 부여함 */
+//     id: "1",
+//     data: { label: "Hello" },
+//     position: { x: 0, y: 0 },
+//     type: "input",
+//   },
+//   {
+//     id: "2",
+//     data: { label: "World" },
+//     position: { x: 100, y: 100 },
+//   },
+//   {
+//     id: "3",
+//     data: { label: "New World" },
+//     position: { x: 200, y: 200 },
+//   },
+// ];
 const initialNodes = [
   {
-    /* 다양한 노드를 활용하기 위해 고유한 id를 부여함 */
-    id: "1",
-    data: { label: "Hello" },
+    id: "node-1",
+    type: "textUpdater",
     position: { x: 0, y: 0 },
-    type: "input",
-  },
-  {
-    id: "2",
-    data: { label: "World" },
-    position: { x: 100, y: 100 },
-  },
-  {
-    id: "3",
-    data: { label: "New World" },
-    position: { x: 200, y: 200 },
+    data: { value: 123 },
   },
 ];
 
@@ -71,6 +87,8 @@ const Flow = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
+        nodeTypes={nodeTypes}
+        style={rfStyle}
       >
         <Background />
         <Controls />
