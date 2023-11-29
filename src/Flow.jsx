@@ -13,29 +13,10 @@ import TextUpdaterNode from "./TextUpdaterNode";
 import "./text-updater-node.css";
 
 const rfStyle = {
-  backgroundColor: "yellow",
+  backgroundColor: "#B8CEFF",
 };
 const nodeTypes = { textUpdater: TextUpdaterNode };
 /**노드 */
-// const initialNodes = [
-//   {
-//     /* 다양한 노드를 활용하기 위해 고유한 id를 부여함 */
-//     id: "1",
-//     data: { label: "Hello" },
-//     position: { x: 0, y: 0 },
-//     type: "input",
-//   },
-//   {
-//     id: "2",
-//     data: { label: "World" },
-//     position: { x: 100, y: 100 },
-//   },
-//   {
-//     id: "3",
-//     data: { label: "New World" },
-//     position: { x: 200, y: 200 },
-//   },
-// ];
 const initialNodes = [
   {
     id: "node-1",
@@ -43,16 +24,35 @@ const initialNodes = [
     position: { x: 0, y: 0 },
     data: { value: 123 },
   },
+  {
+    id: "node-2",
+    type: "output",
+    targetPosition: "top",
+    position: { x: 0, y: 200 },
+    data: { label: "node 2" },
+  },
+  {
+    id: "node-3",
+    type: "output",
+    targetPosition: "top",
+    position: { x: 200, y: 200 },
+    data: { label: "node 3" },
+  },
 ];
 
 /**엣지 */
 const initialEdges = [
   {
-    id: "1-2", //노드1에서 노드2로 가는 엣지
-    source: "1", //시작하는 노드
-    target: "2", //끝나는 노드
-    label: "to the", //엣지에 이름도 넣어줄 수 있다.
-    type: "step",
+    id: "edge-1",
+    source: "node-1",
+    target: "node-2",
+    sourceHandle: "a",
+  },
+  {
+    id: "edge-2",
+    source: "node-1",
+    target: "node-3",
+    sourceHandle: "b",
   },
 ];
 const Flow = () => {
