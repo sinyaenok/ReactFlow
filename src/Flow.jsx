@@ -1,85 +1,88 @@
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 import ReactFlow, {
-  Controls, //컨트롤러
-  Background, //배경
-  applyEdgeChanges, //엣지를 이동하는 함수
-  applyNodeChanges, //노드를 이동하는 함수
-  addEdge, //엣지를 새로 연결시키는 함수
+  Background,
+  Controls,
+  MiniMap,
+  useNodesState,
+  useEdgesState,
+  addEdge,
+  Position,
 } from "reactflow";
-import "reactflow/dist/style.css";
 
-//내부 import
-import TextUpdaterNode from "./TextUpdaterNode";
-import "./text-updater-node.css";
+// import "reactflow/dist/style.css";
+import "reactflow/dist/base.css";
 
-const rfStyle = {
-  backgroundColor: "#B8CEFF",
+const nodeDefaults = {
+  sourcePosition: Position.Right,
+  targetPosition: Position.Left,
 };
-const nodeTypes = { textUpdater: TextUpdaterNode };
-/**노드 */
+
 const initialNodes = [
   {
-    id: "node-1",
-    type: "textUpdater",
-    position: { x: 0, y: 0 },
-    data: { value: 123 },
+    id: "1",
+    position: { x: 0, y: 150 },
+    data: { label: "default style 1" },
+    ...nodeDefaults,
   },
   {
-    id: "node-2",
-    type: "output",
-    targetPosition: "top",
-    position: { x: 0, y: 200 },
-    data: { label: "node 2" },
+    id: "2",
+    position: { x: 250, y: 0 },
+    data: { label: "default style 2" },
+    ...nodeDefaults,
   },
   {
-    id: "node-3",
-    type: "output",
-    targetPosition: "top",
-    position: { x: 200, y: 200 },
-    data: { label: "node 3" },
+    id: "3",
+    position: { x: 250, y: 150 },
+    data: { label: "default style 3" },
+    ...nodeDefaults,
+  },
+  {
+    id: "4",
+    position: { x: 250, y: 300 },
+    data: { label: "default style 4" },
+    ...nodeDefaults,
+  },
+  {
+    id: "5",
+    position: { x: 500, y: 150 },
+    data: { label: "4" },
+
+    ...nodeDefaults,
   },
 ];
 
-/**엣지 */
 const initialEdges = [
   {
-    id: "edge-1",
-    source: "node-1",
-    target: "node-2",
-    sourceHandle: "a",
+    id: "e1-2",
+    source: "1",
+    target: "2",
+    animated: true,
   },
   {
-    id: "edge-2",
-    source: "node-1",
-    target: "node-3",
-    sourceHandle: "b",
+    id: "e1-3",
+    source: "1",
+    target: "3",
+    animated: true,
+  },
+  {
+    id: "e1-4",
+    source: "1",
+    target: "4",
+    animated: true,
   },
 ];
+
 const Flow = () => {
-  // <--상수-->
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
-  // 'React Flow' 상위 크기를 사용. 따라서 너비와 높이가 필요함
-  const flowHeight = { height: "100vh" };
-
-  // <-- 함수 -->
-  const onNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    []
-  );
-
-  const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    []
-  );
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (params) => setEdges((els) => addEdge(params, els)),
     []
   );
 
   return (
-    <div style={flowHeight}>
+    <div style={{ height: "100vh" }}>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -87,11 +90,10 @@ const Flow = () => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
-        nodeTypes={nodeTypes}
-        style={rfStyle}
       >
         <Background />
         <Controls />
+        <MiniMap />
       </ReactFlow>
     </div>
   );
